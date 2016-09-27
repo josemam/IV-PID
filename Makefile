@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O3 -m32 -static -s -Wall -Iinclude
+CXXFLAGS = -O3 -m32 -static -s -Wall -Iinclude -flto
 OBJ = obj/
 SRC = src/
 

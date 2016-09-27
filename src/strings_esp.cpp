@@ -6,6 +6,7 @@
 char Y_CHAR = 's';
 char N_CHAR = 'n';
 const char
+*CHAINED_SHINY_METHOD = "Shiny de PokéRadar",
 *NATURE[25] = {
   "Fuerte", "Huraña", "Audaz", "Firme", "Pícara", "Osada", "Dócil",
   "Plácida", "Agitada", "Floja", "Miedosa", "Activa", "Seria",
@@ -21,8 +22,9 @@ const char
             "2: IV mínimos + HP --> PID\n"
             "3: IV mínimos + ID + SID --> PID shiny\n"
             "4: IV mínimos + HP + ID + SID --> PID shiny\n"
-            "5: PID --> IV\n"
-            "6: PID shiny + ID --> SID\n"
+            "5: IV --> PID shiny de PokéRadar\n"
+            "6: PID --> IV\n"
+            "7: PID shiny + ID --> SID\n"
             "Modo",
 *PID_ASK_MSG = "PID (decimal)",
 *ID_ASK_MSG = "ID",

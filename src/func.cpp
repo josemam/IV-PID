@@ -3,7 +3,7 @@
   * @brief Functions for iv-pid
   */
 
-#include "io.h"
+#include "io.h"   // Print
 #include "func.h"
 
 /* RNG constants */
@@ -105,6 +105,19 @@ void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, i
     Print(pid, iv1, iv2, method, ++count);
 }
 
+void FindChainedPID(uint32_t seed, int iv1, int iv2, const PokeData& pdata, int &count) {
+  uint16_t pid_corrector = 0;
+  for (int i = 15; i >= 3; i--)
+    pid_corrector |= ((antiRNG(seed) & 1) << i);
+
+  uint16_t pid_h, pid_l;
+  pid_h = ((antiRNG(seed) & 7) | ((pdata.IDxorSID^pid_corrector) & (~7)));
+  pid_l = ((antiRNG(seed) & 7) | pid_corrector);
+  uint32_t pid = (pid_l | (pid_h << 16));
+  if (PIDtest(pid, pdata.nature, pdata.ability))
+    Print(pid, iv1, iv2, -1, ++count);
+}
+
 void Test(uint32_t seed, const PokeData& pdata, int gba, IVtester& IVtest, int &count) {
   uint16_t n2 = seed >> 16;
   if (!HPpretest(n2, pdata.hp_type, pdata.hp_power))
@@ -113,6 +126,9 @@ void Test(uint32_t seed, const PokeData& pdata, int gba, IVtester& IVtest, int &
   uint16_t n1 = antiRNG(seed);
 
   if (IVtest(n1, pdata.hp, pdata.at, pdata.df)) {
+    if (gba == -1)
+      return FindChainedPID(seed, n1, n2, pdata, count);
+
     FindPID(seed, n1, n2, pdata, 0, count);
     if (gba) {
       uint32_t seed_copy = seed;
@@ -139,44 +155,17 @@ void Test(uint32_t seed, const PokeData& pdata, int gba, IVtester& IVtest, int &
   }
 }
 
-void IVtoPID(bool fixed_hp, bool shiny) {
-  bool exact = !fixed_hp && !shiny;
-  PokeData pdata;
-  int spa, spd, spe;
-  AskIVs(pdata.hp, pdata.at, pdata.df, spa, spd, spe);
-
-  pdata.nature  = AskNature ();
-  pdata.ability = AskAbility();
-  pdata.hp_type = pdata.hp_power = -1;
-  pdata.IDxorSID = 1;
-  int gba     = AskMethods();
-  if (fixed_hp) {
-    pdata.hp_type = AskHiddenPowerType();
-    pdata.hp_power = AskHiddenPowerBasePower();
-  }
-  if (shiny) {
-    uint16_t id = AskID(), sid = AskSID();
-    pdata.IDxorSID = (id^sid)&0xFFF8;
-  }
-
-  int count = 0;
+void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count) {
   IVtester IVtest = GetIVtester(exact);
-  for (int spa_ = (exact ? spa : 31); spa_ >= spa; spa_--)
-    for (int spd_ = (exact ? spd : 31); spd_ >= spd; spd_--)
-      for (int spe_ = (exact ? spe : 31); spe_ >= spe; spe_--) {
+  for (int spa_ = (exact ? pdata.spa : 31); spa_ >= pdata.spa; spa_--)
+    for (int spd_ = (exact ? pdata.spd : 31); spd_ >= pdata.spd; spd_--)
+      for (int spe_ = (exact ? pdata.spe : 31); spe_ >= pdata.spe; spe_--) {
         uint32_t high_seed = (spe_ | (spa_ << 5) | (spd_ << 10)) << 16;
         for (uint32_t low_seed = 0; low_seed < 65536; low_seed++) {
           Test(low_seed | high_seed            , pdata, gba, IVtest, count);
           Test(low_seed | high_seed | (1 << 31), pdata, gba, IVtest, count);
         }
       }
-
-  if (!count)
-    NoPIDMsg();
-  else
-    EndOfResults();
-
-  Pause();
 }
 
 bool HighPIDmatches(uint32_t state, uint16_t pid_h) {

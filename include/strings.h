@@ -7,7 +7,9 @@
 #define __STRINGS_H__
 
 const char* BAR = "\n=============================\n";
-const char* METHOD[] = {"A-B-C-D", "A-B-D-E", "A-B-C-E", "A-B-D-F", "A-B-E-F"};
+extern const char* CHAINED_SHINY_METHOD;
+const char* METHOD_[] = {CHAINED_SHINY_METHOD, "A-B-C-D", "A-B-D-E", "A-B-C-E", "A-B-D-F", "A-B-E-F"};
+const char** METHOD = METHOD_ + 1;
 
 /* Language-dependant strings */
 extern const char Y_CHAR, N_CHAR;

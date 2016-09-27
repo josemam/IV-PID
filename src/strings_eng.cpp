@@ -6,6 +6,7 @@
 char Y_CHAR = 'y';
 char N_CHAR = 'n';
 const char
+*CHAINED_SHINY_METHOD = "Chained shiny",
 *NATURE[25] = {
   "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold",
   "Docile", "Relaxed", "Impish", "Lax", "Timid", "Hasty",
@@ -19,10 +20,11 @@ const char
 *MODE_MSG = "0: Exit\n"
             "1: IV --> PID\n"
             "2: Minimum IV + HP --> PID\n"
-            "3: Minimum IV + ID + SID --> PID shiny\n"
-            "4: Minimum IV + HP + ID + SID --> PID shiny\n"
-            "5: PID --> IV\n"
-            "6: PID shiny + ID --> SID\n"
+            "3: Minimum IV + ID + SID --> shiny PID\n"
+            "4: Minimum IV + HP + ID + SID --> shiny PID\n"
+            "5: IV --> chained shiny PID\n"
+            "6: PID --> IV\n"
+            "7: Shiny PID + ID --> SID\n"
             "Mode",
 *PID_ASK_MSG = "PID (decimal)",
 *ID_ASK_MSG = "ID",

@@ -94,12 +94,17 @@ bool XORtest(uint16_t pid_l, uint16_t pid_h, uint16_t IDxorSID);
   * It will further filter the results of the IV to PID method
   */
 struct PokeData {
-  int hp, at, df;     // Minimum or exact HP, Attack and Defense IVs
+  int hp, at, df,
+      spa, spd, spe;  // Minimum or exact HP, Attack and Defense IVs
   int nature;         // Nature ID, or -1 if any
   int ability;        // Ability ID, or 2 if any
   int hp_type;        // Hidden Power type ID, or -1 if any
   int hp_power;       // Hidden Power minimum power, or -1 if any
   uint16_t IDxorSID;  // Trainer ID xor Trainer Secret ID
+
+  PokeData()
+    :nature(-1), ability(2), hp_type(-1), hp_power(-1), IDxorSID(1)
+    { hp = at = df = spa = spd = spe = 0; }
 };
 
 /**
@@ -114,10 +119,30 @@ struct PokeData {
 void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, int method, int &count);
 
 /**
+  * @brief Explores all possible seeds that might lead to results
+  * @param pdata  IVs and data to match
+  * @param gba    Allowed methods (0 = only NDS, 1 = NDS and common GBA, 2 = all, -1 = chained shiny)
+  * @param exact  true if exact IVs are wanted, false otherwise
+  * @param count  Number of results so far
+  * @return Return_Description
+  */
+void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count);
+
+/**
+  * @brief Gets the PID for a chained shiny and prints if it matches any wanted pdata
+  * @param seed   RNG state after the first call that has nothing to do with PID
+  * @param iv1    RNG number that holds the HP, Attack and Defense IVs
+  * @param iv2    RNG number that led the other IVs
+  * @param pdata  Data to match
+  * @param count  Number of results so far
+  */
+void FindChainedPID(uint32_t seed, int iv1, int iv2, const PokeData& pdata, int &count);
+
+/**
   * @brief Test if a given RNG state leads to wanted IVs and data
   * @param seed   RNG state after the last RNG call (which led to the last IVs)
   * @param pdata  IVs and data to match
-  * @param gba    Allowed methods (0 = only NDS, 1 = NDS and common GBA, 2 = all)
+  * @param gba    Allowed methods (0 = only NDS, 1 = NDS and common GBA, 2 = all, -1 = chained shiny)
   * @param IVtest Reference to the function that tells whether the IVs are ok
   * @param count  Number of results so far
   * 
@@ -125,23 +150,6 @@ void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, i
   * any results that match the wanted \p pdata.
   */
 void Test(uint32_t seed, const PokeData& pdata, int gba, IVtester& IVtest, int &count);
-
-/**
-  * @brief Gets all possible PID values for given conditions
-  * @param fixed_hp Whether the HP is fixed
-  * @param shiny    Whether a shiny Pokémon is wanted
-  * 
-  * The user is asked some IVs, nature, ability, list of
-  * allowed methods, maybe HP type and minimum power,
-  * and maybe ID and SID. Then all possible PID for that will
-  * (hopefully) be found.
-  * 
-  * @note The IVs are considered as minimum if any
-  * of \p fixed_hp and \p shiny is true and are taken
-  * as exact wanted IVs otherwise, as any other combination
-  * would be pointless.
-  */
-void IVtoPID(bool fixed_hp, bool shiny);
 
 /**
   * @brief Checks if a RNG state generates a given PID
