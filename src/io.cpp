@@ -4,6 +4,7 @@
   */
 
 #include <iostream>
+#include <iomanip>    // padding natures and types
 #include <stdint.h>
 #ifdef _WIN32
   #include <conio.h>  // getch()
@@ -48,12 +49,12 @@ bool AvoidLoops() {
 
 void ShowAllNatures() {
   for (int x = 0; x < 25; x++)
-    cout << x << (x<10 ? ":  " : ": ") << NATURE[x] << (x%5==4 ? '\n' : '\t');
+    cout << left << x << (x<10 ? ":  " : ": ") << setw(11) << NATURE[x] << (x%5==4 ? '\n' : ' ');
 }
 
 void ShowAllTypes() {
   for (int x = 0; x < 16; x++)
-    cout << x << (x<10 ? ":  " : ": ") << HP_TYPE[x] << (x%5==4 ? '\n' : '\t');
+    cout << left << x << (x<10 ? ":  " : ": ") << setw(11) << HP_TYPE[x] << (x%5==4 ? '\n' : ' ');
 
   cout << '\n';
 }

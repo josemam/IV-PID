@@ -8,13 +8,13 @@ char N_CHAR = 'n';
 const char
 *NATURE[25] = {
   "Hardy", "Lonely", "Brave", "Adamant", "Naughty", "Bold",
-  "Docile", "Relaxed", "Impish", "Lax ", "Timid", "Hasty",
+  "Docile", "Relaxed", "Impish", "Lax", "Timid", "Hasty",
   "Serious", "Jolly", "Naive", "Modest", "Mild", "Quiet",
   "Bashful", "Rash", "Calm", "Gentle", "Sassy", "Careful", "Quirky"
 },
 *HP_TYPE[16] = {
-  "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug ", "Ghost", "Steel",
-  "Fire", "Water", "Grass", "Electric", "Psychic", "Ice ", "Dragon", "Dark"
+  "Fighting", "Flying", "Poison", "Ground", "Rock", "Bug", "Ghost", "Steel",
+  "Fire", "Water", "Grass", "Electric", "Psychic", "Ice", "Dragon", "Dark"
 },
 *MODE_MSG = "0: Exit\n"
             "1: IV --> PID\n"
