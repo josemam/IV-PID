@@ -22,7 +22,7 @@ const char
             "2: IV mínimos + HP --> PID\n"
             "3: IV mínimos + ID + SID --> PID shiny\n"
             "4: IV mínimos + HP + ID + SID --> PID shiny\n"
-            "5: IV --> PID shiny de PokéRadar\n"
+            "5: IV + ID + SID --> PID shiny de PokéRadar\n"
             "6: PID --> IV\n"
             "7: PID shiny + ID --> SID\n"
             "Modo",

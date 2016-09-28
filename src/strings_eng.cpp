@@ -22,7 +22,7 @@ const char
             "2: Minimum IV + HP --> PID\n"
             "3: Minimum IV + ID + SID --> shiny PID\n"
             "4: Minimum IV + HP + ID + SID --> shiny PID\n"
-            "5: IV --> chained shiny PID\n"
+            "5: IV + ID + SID --> chained shiny PID\n"
             "6: PID --> IV\n"
             "7: Shiny PID + ID --> SID\n"
             "Mode",
