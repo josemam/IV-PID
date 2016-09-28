@@ -1,5 +1,11 @@
 CXX = g++
-CXXFLAGS = -O3 -m32 -static -s -Wall -Iinclude -flto -finput-charset=UTF-8 -fexec-charset=UTF-8
+CHARSET = UTF-8
+# If Windows, sets the Western Europe charset
+ifdef SystemRoot 		
+	CHARSET = CP850
+endif
+
+CXXFLAGS = -O3 -m32 -static -s -Wall -Iinclude -flto -fexec-charset=$(CHARSET)
 OBJ = obj/
 SRC = src/
 
