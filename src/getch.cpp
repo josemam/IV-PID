@@ -5,6 +5,7 @@
 #ifndef __GETCH__
 #define __GETCH__
 
+#include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
 

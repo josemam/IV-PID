@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O3 -m32 -static -s -Wall -Iinclude -flto
+CXXFLAGS = -O3 -m32 -static -s -Wall -Iinclude -flto -finput-charset=UTF-8 -fexec-charset=UTF-8
 OBJ = obj/
 SRC = src/
 
