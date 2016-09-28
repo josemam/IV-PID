@@ -115,6 +115,9 @@ struct PokeData {
   * @param pdata  Data to match
   * @param method Chosen method
   * @param count  Number of results so far
+  * 
+  * @note two PIDs might be found if both the PID for seed and the PID for
+  * seed xor 0x8000 0000 match the conditions.
   */
 void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, int method, int &count);
 
@@ -124,7 +127,8 @@ void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, i
   * @param gba    Allowed methods (0 = only NDS, 1 = NDS and common GBA, 2 = all, -1 = chained shiny)
   * @param exact  true if exact IVs are wanted, false otherwise
   * @param count  Number of results so far
-  * @return Return_Description
+  * 
+  * @note Only seeds lower than 0x8000 0000 are explored.
   */
 void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count);
 

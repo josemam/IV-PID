@@ -99,10 +99,22 @@ void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, i
   pid_h = antiRNG(seed);
   pid_l = antiRNG(seed);
   uint32_t pid = (pid_l | (pid_h << 16));
-  if (PIDtest(pid, pdata.nature, pdata.ability)
-          && HPtest(iv1, iv2, pdata.hp_type, pdata.hp_power)
-          && XORtest(pid_l, pid_h, pdata.IDxorSID))
-    Print(pid, iv1, iv2, method, ++count);
+  for (int i = 0; i < 2; pid^=0x80008000, i++)
+    if (PIDtest(pid, pdata.nature, pdata.ability)
+            && HPtest(iv1, iv2, pdata.hp_type, pdata.hp_power)
+            && XORtest(pid_l, pid_h, pdata.IDxorSID))
+      Print(pid, iv1, iv2, method, ++count);
+}
+
+void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count) {
+  IVtester IVtest = GetIVtester(exact);
+  for (int spa_ = (exact ? pdata.spa : 31); spa_ >= pdata.spa; spa_--)
+    for (int spd_ = (exact ? pdata.spd : 31); spd_ >= pdata.spd; spd_--)
+      for (int spe_ = (exact ? pdata.spe : 31); spe_ >= pdata.spe; spe_--) {
+        uint32_t high_seed = (spe_ | (spa_ << 5) | (spd_ << 10)) << 16;
+        for (uint32_t low_seed = 0; low_seed < 65536; low_seed++)
+          Test(low_seed | high_seed, pdata, gba, IVtest, count);
+      }
 }
 
 void FindChainedPID(uint32_t seed, int iv1, int iv2, const PokeData& pdata, int &count) {
@@ -153,19 +165,6 @@ void Test(uint32_t seed, const PokeData& pdata, int gba, IVtester& IVtest, int &
       }
     }
   }
-}
-
-void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count) {
-  IVtester IVtest = GetIVtester(exact);
-  for (int spa_ = (exact ? pdata.spa : 31); spa_ >= pdata.spa; spa_--)
-    for (int spd_ = (exact ? pdata.spd : 31); spd_ >= pdata.spd; spd_--)
-      for (int spe_ = (exact ? pdata.spe : 31); spe_ >= pdata.spe; spe_--) {
-        uint32_t high_seed = (spe_ | (spa_ << 5) | (spd_ << 10)) << 16;
-        for (uint32_t low_seed = 0; low_seed < 65536; low_seed++) {
-          Test(low_seed | high_seed            , pdata, gba, IVtest, count);
-          Test(low_seed | high_seed | (1 << 31), pdata, gba, IVtest, count);
-        }
-      }
 }
 
 bool HighPIDmatches(uint32_t state, uint16_t pid_h) {
