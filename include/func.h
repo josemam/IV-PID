@@ -90,7 +90,7 @@ bool HPtest(uint16_t iv1, uint16_t iv2, int hpt, int hpp);
 bool XORtest(uint16_t pid_l, uint16_t pid_h, uint16_t IDxorSID);
 
 /**
-  * A structure to hold desired properties for a Pok�mon.
+  * A structure to hold desired properties for a Pokémon.
   * It will further filter the results of the IV to PID method
   */
 struct PokeData {
@@ -122,15 +122,19 @@ struct PokeData {
 void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, int method, int &count);
 
 /**
-  * @brief Explores all possible seeds that might lead to results
+  * @brief Explores all possible seeds backwards
   * @param pdata  IVs and data to match
   * @param gba    Allowed methods (0 = only NDS, 1 = NDS and common GBA, 2 = all, -1 = chained shiny)
   * @param exact  true if exact IVs are wanted, false otherwise
   * @param count  Number of results so far
   * 
+  * All the sequences that finish with the wanted Special Attack, Special
+  * Defense and Speed are tested to find out whether they match the other
+  * IVs and the PID-related attributes.
+  * 
   * @note Only seeds lower than 0x8000 0000 are explored.
   */
-void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count);
+void TestAllPossibleSeedsBackwards(const PokeData& pdata, int gba, bool exact, int& count);
 
 /**
   * @brief Gets the PID for a chained shiny and prints if it matches any wanted pdata
@@ -143,7 +147,7 @@ void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count
 void FindChainedPID(uint32_t seed, int iv1, int iv2, const PokeData& pdata, int &count);
 
 /**
-  * @brief Test if a given RNG state leads to wanted IVs and data
+  * @brief Tests if a given RNG state leads to wanted IVs and data
   * @param seed   RNG state after the last RNG call (which led to the last IVs)
   * @param pdata  IVs and data to match
   * @param gba    Allowed methods (0 = only NDS, 1 = NDS and common GBA, 2 = all, -1 = chained shiny)
@@ -164,13 +168,31 @@ void Test(uint32_t seed, const PokeData& pdata, int gba, IVtester& IVtest, int &
   */
 bool HighPIDmatches(uint32_t state, uint16_t pid_h);
 
-
 /**
-  * @brief Get all possible PID and IV distributions from RNG state
+  * @brief Gets all possible PID and IV distributions from RNG state
   * @param seed  RNG state after the first RNG call (which led to the low bits of PID)
   * @param count Number of results found so far
   * @param gba   Allowed methods
   */
 void GetFromSeed(uint32_t seed, int &count, int gba);
+
+/**
+  * @brief Explores all possible seeds forwards
+  * @param pid   PID
+  * @param gba   Allowed methods (0 = only NDS, 1 = NDS and common GBA, 2 = all)
+  * @param count Number of results so far
+  * 
+  * All the sequences that start with the low PID are tested to find out
+  * whether they match the high PID.
+  */
+void TestAllPossibleSeedsForwards(uint32_t pid, int gba, int& count);
+
+/**
+  * @param pid PID
+  * @param id  Trainer ID
+  * @return The maximum possible SID for a shiny Pokémon.
+  * The minimum is the maximum minus 7
+  */
+uint16_t maxSIDforShiny(uint32_t pid, uint16_t id);
 
 #endif

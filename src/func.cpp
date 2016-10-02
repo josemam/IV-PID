@@ -107,7 +107,7 @@ void FindPID(uint32_t seed, uint16_t iv1, uint16_t iv2, const PokeData& pdata, i
       Print(pid, iv1, iv2, method, ++count);
 }
 
-void TestAllPossibleSeeds(const PokeData& pdata, int gba, bool exact, int& count) {
+void TestAllPossibleSeedsBackwards(const PokeData& pdata, int gba, bool exact, int& count) {
   IVtester IVtest = GetIVtester(exact);
   for (int spa_ = (exact ? pdata.spa : 31); spa_ >= pdata.spa; spa_--)
     for (int spd_ = (exact ? pdata.spd : 31); spd_ >= pdata.spd; spd_--)
@@ -192,4 +192,19 @@ void GetFromSeed(uint32_t seed, int &count, int gba) {
       Print(pid, n4, n5, 4, ++count);
     }
   }
+}
+
+void TestAllPossibleSeedsForwards(uint32_t pid, int gba, int& count) {
+  uint32_t high_seed = pid << 16; // Any RNG state that leads to the PID must start with this
+  uint16_t high_pid = pid >> 16;
+  for (uint32_t low_seed = 0; low_seed < 65536; low_seed++)
+    if (HighPIDmatches(low_seed | high_seed, high_pid))
+      GetFromSeed(low_seed | high_seed, count, gba);
+}
+
+uint16_t maxSIDforShiny(uint32_t pid, uint16_t id) {
+  uint16_t pid_h = pid >> 16;
+  uint16_t pid_l = pid;
+
+  return ((pid_h^pid_l)^id) | 7;
 }

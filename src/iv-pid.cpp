@@ -37,7 +37,7 @@ void IVtoPID(bool fixed_hp, bool shiny) {
   }
 
   int count = 0;
-  TestAllPossibleSeeds(pdata, gba, exact, count);
+  TestAllPossibleSeedsBackwards(pdata, gba, exact, count);
 
   if (!count)
     NoPIDMsg();
@@ -70,7 +70,7 @@ void ExactIVtoChainedShinyPID() {
   pdata.IDxorSID = (id^sid)&0xFFF8;
 
   int count = 0;
-  TestAllPossibleSeeds(pdata, -1, exact, count);
+  TestAllPossibleSeedsBackwards(pdata, -1, exact, count);
 
   if (!count)
     NoPIDMsg();
@@ -90,13 +90,8 @@ void PIDtoIV() {
   uint32_t pid = AskPID();
   int gba = AskMethods();
 
-  uint32_t high_seed = pid << 16; // Any RNG state that leads to the PID must start with this
-  uint16_t high_pid = pid >> 16;
   int count = 0;
-  /* All the possible RNG seeds are tested */
-  for (uint32_t low_seed = 0; low_seed < 65536; low_seed++)
-    if (HighPIDmatches(low_seed | high_seed, high_pid))
-      GetFromSeed(low_seed | high_seed, count, gba);
+  TestAllPossibleSeedsForwards(pid, gba, count);
 
   if (!count)
     NoIVMsg();
@@ -113,10 +108,7 @@ void GetSID() {
   uint32_t pid = AskPID();
   uint16_t  id = AskID ();
 
-  uint16_t pid_h = pid >> 16;
-  uint16_t pid_l = pid;
-
-  ShowSIDRange(((pid_h^pid_l)^id) | 7);
+  ShowSIDRange(maxSIDforShiny(pid, id));
   Pause();
 }
 
