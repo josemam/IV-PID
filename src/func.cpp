@@ -3,8 +3,9 @@
   * @brief Functions for iv-pid
   */
 
-#include "io.h"   // Print
 #include "func.h"
+
+extern void Print(uint32_t pid, uint16_t iv1, uint16_t iv2, int method, int count);
 
 /* RNG constants */
 const uint32_t MULTIPLIER = 1103515245U;
