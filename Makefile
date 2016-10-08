@@ -6,13 +6,16 @@ ifdef SystemRoot
 endif
 
 CXXFLAGS = -O3 -m32 -static -s -Wall -Iinclude -flto -fexec-charset=$(CHARSET)
-OBJ = obj/
-SRC = src/
+OBJ = obj
+SRC = src
 
 all: iv-pid_eng iv-pid_esp
 
-$(OBJ)%.o: $(SRC)%.cpp
+$(OBJ):
+	mkdir $@
+
+$(OBJ)/%.o: $(SRC)/%.cpp $(OBJ)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-iv-pid_%: $(OBJ)iv-pid.o $(OBJ)io.o $(OBJ)func.o $(OBJ)strings_%.o
+iv-pid_%: $(OBJ)/iv-pid.o $(OBJ)/io.o $(OBJ)/func.o $(OBJ)/strings_%.o
 	$(CXX) $(CXXFLAGS) $^ -o $@
