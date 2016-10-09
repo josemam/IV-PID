@@ -177,3 +177,8 @@ void NoIVMsg() {
 void EndOfResults() {
   cout << "\n" << END_OF_RESULTS_MSG << ". ";
 }
+
+void WelcomeMessage() {
+  cout << BAR << "\n" << PROGRAM_NAME << " " << VERSION << " - "
+       << LICENSE << " GPLv2\n" << TEXT_BEFORE_GH_LINK << ":\n" << LINK;
+}

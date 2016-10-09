@@ -43,4 +43,6 @@ const char
 *NO_PID_MSG = "No valid PID found",
 *IMPOSSIBLE_PID_MSG = "That PID is impossible due to RNG mechanism",
 *END_OF_RESULTS_MSG = "End of results",
-*PAUSE_MSG = "Press any key to continue or Esc to exit...";
+*PAUSE_MSG = "Press any key to continue or Esc to exit...",
+*LICENSE = "License",
+*TEXT_BEFORE_GH_LINK = "You can read the code, make\nsuggestions and report bugs at";

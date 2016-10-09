@@ -45,4 +45,6 @@ void NoPIDMsg();
 void NoIVMsg();
 void EndOfResults();
 
+void WelcomeMessage();
+
 #endif

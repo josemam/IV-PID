@@ -6,7 +6,8 @@
 #ifndef __STRINGS_H__
 #define __STRINGS_H__
 
-const char* BAR = "\n=============================\n";
+const char* BAR = "\n=================================\n";
+const char* LINK = "https://github.com/josemam/IV-PID";
 extern const char* CHAINED_SHINY_METHOD;
 const char* METHOD_[] = {CHAINED_SHINY_METHOD, "A-B-C-D", "A-B-D-E", "A-B-C-E", "A-B-D-F", "A-B-E-F"};
 const char** METHOD = METHOD_ + 1;
@@ -34,6 +35,8 @@ extern const char
 *NO_PID_MSG,
 *IMPOSSIBLE_PID_MSG,
 *END_OF_RESULTS_MSG,
-*PAUSE_MSG;
+*PAUSE_MSG,
+*LICENSE,
+*TEXT_BEFORE_GH_LINK;
 
 #endif

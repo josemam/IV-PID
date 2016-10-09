@@ -125,6 +125,8 @@ modefunc modes[] = {
 int nmodes = sizeof(modes)/sizeof(modefunc);
 
 int main() {
+  WelcomeMessage();
+
   char mode;
   do {
     mode = AskMode();
