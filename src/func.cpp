@@ -35,7 +35,7 @@ IVtester GetIVtester(bool exact) {
 }
 
 bool PIDtest(uint32_t pid, int nature, int ability) {
-  return (nature == -1 || (int) pid%25 == nature) && (ability == 2 || (int) pid%2 == ability);
+  return (nature == -1 || (int) (pid%25) == nature) && (ability == 2 || (int) (pid%2) == ability);
 }
 
 bool HPpretest(uint16_t iv, int hpt, int hpp) {
