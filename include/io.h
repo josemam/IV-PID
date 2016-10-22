@@ -1,6 +1,6 @@
 /**
   * @file io.h
-  * @brief Command line I/O for iv-pid
+  * @brief I/O functions headers for iv-pid
   */
 
 #ifndef __IO_H__
@@ -14,8 +14,6 @@ void Pause();
   * @brief Prints a given IV-PID combination
   */
 void Print(uint32_t pid, uint16_t iv1, uint16_t iv2, int method, int count);
-
-bool AvoidLoops();
 
 /**
   * @brief Shows all natures and their IDs
