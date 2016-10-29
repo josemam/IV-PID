@@ -1,5 +1,5 @@
 /**
-  * @file strings_esp.cpp
+  * @file esp.c
   * @brief Spanish strings for iv-pid
   */
 

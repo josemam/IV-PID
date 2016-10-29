@@ -1,5 +1,5 @@
 /**
-  * @file strings_eng.cpp
+  * @file eng.c
   * @brief English strings for iv-pid
   */
 

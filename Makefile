@@ -14,6 +14,7 @@ IO = cmdline_io
 IOFLAGS = $(STRINGFLAGS) -DPROGRAM_NAME=\"$(PROGRAM_NAME)\" -DVERSION=\"$(VERSION)\"
 OBJ = obj
 SRC = src
+STR = strings
 .INTERMEDIATE: $(OBJ)/$(IO).o
 
 all: iv-pid_eng iv-pid_esp
@@ -21,7 +22,7 @@ all: iv-pid_eng iv-pid_esp
 $(OBJ):
 	mkdir $@
 
-$(OBJ)/strings%.o: $(SRC)/strings%.cpp $(OBJ)
+$(OBJ)/strings_%.o: $(STR)/%.c $(OBJ)
 	$(CXX) $(CXXFLAGS) $(STRINGSFLAGS) -c $< -o $@
 
 $(OBJ)/$(IO).o: $(SRC)/$(IO).cpp $(OBJ)
